@@ -12,15 +12,19 @@ import javax.swing.JTabbedPane;
 import org.silnith.browser.model.BrowsingContext;
 import org.silnith.browser.network.CacheManager;
 
+
 public class BrowsingPanel extends JPanel {
-
+    
     private final NavigationPanel navigationPanel;
+    
     private final RenderPanel renderPanel;
+    
     private final JComponent configurationPanel;
+    
     private final JComponent downloadsPanel;
-
+    
     private final BrowsingContext browsingContext;
-
+    
     public BrowsingPanel(final CacheManager cacheManager) {
         super(new BorderLayout());
         this.navigationPanel = new NavigationPanel();
@@ -29,7 +33,7 @@ public class BrowsingPanel extends JPanel {
         this.downloadsPanel = new JPanel();
         this.browsingContext = new BrowsingContext(cacheManager);
     }
-
+    
     public void initialize() {
         assert EventQueue.isDispatchThread();
         
@@ -53,5 +57,5 @@ public class BrowsingPanel extends JPanel {
         this.add(navigationPanel, BorderLayout.NORTH);
         this.add(splitPane, BorderLayout.CENTER);
     }
-
+    
 }

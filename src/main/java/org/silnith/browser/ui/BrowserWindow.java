@@ -9,6 +9,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -27,28 +28,29 @@ import org.silnith.browser.ui.action.tab.TabScrollAction;
 import org.silnith.browser.ui.action.tab.TabTopAction;
 import org.silnith.browser.ui.action.tab.TabWrapAction;
 
+
 public class BrowserWindow extends JFrame {
-
+    
     private final CacheManager cacheManager;
-
+    
     private final NewWindowAction newWindowAction;
-
+    
     private final ExitBrowserAction exitBrowserAction;
-
+    
     private final JTabbedPane tabbedPane;
-
-    public BrowserWindow(final CacheManager cacheManager,
-            final NewWindowAction newWindowAction, final ExitBrowserAction exitBrowserAction) {
+    
+    public BrowserWindow(final CacheManager cacheManager, final NewWindowAction newWindowAction,
+            final ExitBrowserAction exitBrowserAction) {
         super("Browser Window");
         this.cacheManager = cacheManager;
         this.newWindowAction = newWindowAction;
         this.exitBrowserAction = exitBrowserAction;
-        this.tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        this.tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationByPlatform(true);
     }
-
+    
     public void initialize() {
         assert EventQueue.isDispatchThread();
         
@@ -57,7 +59,7 @@ public class BrowserWindow extends JFrame {
         this.setContentPane(tabbedPane);
         createNewTab();
     }
-
+    
     private JMenuBar createMenuBar() {
         final JMenu browserMenu = new JMenu("Browser");
         browserMenu.setMnemonic(KeyEvent.VK_B);
@@ -85,7 +87,7 @@ public class BrowserWindow extends JFrame {
         menuBar.add(createLookAndFeelMenu());
         return menuBar;
     }
-
+    
     private JMenu createTabPlacementMenu() {
         final JRadioButtonMenuItem topMenuItem = new JRadioButtonMenuItem(new TabTopAction(tabbedPane));
         final JRadioButtonMenuItem leftMenuItem = new JRadioButtonMenuItem(new TabLeftAction(tabbedPane));
@@ -108,7 +110,7 @@ public class BrowserWindow extends JFrame {
         
         return menu;
     }
-
+    
     private JMenu createTabLayoutPolicyMenu() {
         final JRadioButtonMenuItem wrapMenuItem = new JRadioButtonMenuItem(new TabWrapAction(tabbedPane));
         final JRadioButtonMenuItem scrollMenuItem = new JRadioButtonMenuItem(new TabScrollAction(tabbedPane));
@@ -125,17 +127,18 @@ public class BrowserWindow extends JFrame {
         
         return menu;
     }
-
+    
     private JMenu createLookAndFeelMenu() {
         final JMenu menu = new JMenu("Look And Feel");
         menu.setMnemonic(KeyEvent.VK_L);
         for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-            final SetLookAndFeelAction setLookAndFeelAction = new SetLookAndFeelAction(info.getName(), info.getClassName());
+            final SetLookAndFeelAction setLookAndFeelAction =
+                    new SetLookAndFeelAction(info.getName(), info.getClassName());
             menu.add(setLookAndFeelAction);
         }
         return menu;
     }
-
+    
     public void createNewTab() {
         assert EventQueue.isDispatchThread();
         
@@ -144,11 +147,11 @@ public class BrowserWindow extends JFrame {
         
         tabbedPane.addTab("New Tab", browsingPanel);
     }
-
+    
     public int getNumberOfTabs() {
         return tabbedPane.getTabCount();
     }
-
+    
     public void closeCurrentTab() {
         assert EventQueue.isDispatchThread();
         
@@ -158,11 +161,11 @@ public class BrowserWindow extends JFrame {
             closeWindow();
         }
     }
-
+    
     public void closeWindow() {
         assert EventQueue.isDispatchThread();
         
         this.dispose();
     }
-
+    
 }

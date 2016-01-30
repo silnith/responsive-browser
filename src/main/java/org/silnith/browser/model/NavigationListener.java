@@ -10,17 +10,17 @@ import org.silnith.browser.ui.NavigationPanel;
 
 
 public class NavigationListener implements ActionListener {
-
+    
     private final BrowsingContext browsingContext;
-
+    
     private final NavigationPanel navigationPanel;
-
+    
     public NavigationListener(final BrowsingContext browsingContext, final NavigationPanel navigationPanel) {
         super();
         this.browsingContext = browsingContext;
         this.navigationPanel = navigationPanel;
     }
-
+    
     @Override
     public void actionPerformed(final ActionEvent event) {
         assert EventQueue.isDispatchThread();
@@ -39,5 +39,5 @@ public class NavigationListener implements ActionListener {
             navigationPanel.showError(e);
         }
     }
-
+    
 }

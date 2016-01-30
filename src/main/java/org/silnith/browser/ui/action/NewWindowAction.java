@@ -10,10 +10,11 @@ import javax.swing.KeyStroke;
 
 import org.silnith.browser.ResponsiveBrowser;
 
+
 public class NewWindowAction extends AbstractAction {
-
+    
     private final ResponsiveBrowser application;
-
+    
     public NewWindowAction(final ResponsiveBrowser application) {
         super("New Window");
         this.application = application;
@@ -23,12 +24,12 @@ public class NewWindowAction extends AbstractAction {
         this.putValue(SHORT_DESCRIPTION, "Opens a new window.");
         this.putValue(LONG_DESCRIPTION, "Opens a new window with a single tab in it.");
     }
-
+    
     @Override
     public void actionPerformed(final ActionEvent event) {
         assert EventQueue.isDispatchThread();
         
         application.createNewWindow();
     }
-
+    
 }

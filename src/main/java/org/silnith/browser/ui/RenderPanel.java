@@ -29,18 +29,20 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 
+
 public class RenderPanel extends JPanel {
-
+    
     private final JPanel progressPanel;
-
+    
     private final JProgressBar progressBar;
-
+    
     private final DocumentPanel documentPanel;
 //    private final JPanel documentPanel;
-
+    
     public RenderPanel() {
         super(new BorderLayout());
         this.progressPanel = new JPanel(new BorderLayout());
@@ -48,7 +50,7 @@ public class RenderPanel extends JPanel {
         this.documentPanel = new DocumentPanel();
 //        this.documentPanel = new JPanel(new BorderLayout());
     }
-
+    
     public void initialize() {
         assert EventQueue.isDispatchThread();
         
@@ -56,9 +58,11 @@ public class RenderPanel extends JPanel {
         
         final FontMetrics fontMetrics = documentPanel.getFontMetrics(documentPanel.getFont().deriveFont(14.0f));
         
-        final JScrollPane scrollPane = new JScrollPane(documentPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(fontMetrics.getAscent() + fontMetrics.getDescent() + fontMetrics.getLeading());
-        
+        final JScrollPane scrollPane = new JScrollPane(documentPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(
+                fontMetrics.getAscent() + fontMetrics.getDescent() + fontMetrics.getLeading());
+                
         progressPanel.add(progressBar, BorderLayout.CENTER);
         
         this.add(progressPanel, BorderLayout.PAGE_START);
@@ -95,9 +99,9 @@ public class RenderPanel extends JPanel {
             protected void done() {
                 try {
                     setText(get());
-                } catch (InterruptedException e) {
+                } catch (final InterruptedException e) {
                     e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (final ExecutionException e) {
                     e.printStackTrace();
                 }
             }
@@ -106,7 +110,7 @@ public class RenderPanel extends JPanel {
         
         loadTask.execute();
     }
-
+    
     public void setText(final String text) {
         assert EventQueue.isDispatchThread();
         
@@ -118,9 +122,9 @@ public class RenderPanel extends JPanel {
         
         renderTask.execute();
     }
-
+    
     private class WorkerListener implements PropertyChangeListener {
-
+        
         @Override
         public void propertyChange(final PropertyChangeEvent evt) {
             final Object oldValue = evt.getOldValue();
@@ -132,64 +136,75 @@ public class RenderPanel extends JPanel {
                 final SwingWorker.StateValue newState = (SwingWorker.StateValue) newValue;
                 
                 switch (newState) {
-                case PENDING: {} break;
+                case PENDING: {
+                }
+                    break;
                 case STARTED: {
                     progressBar.setStringPainted(true);
-                } break;
-                case DONE: {} break;
-                default: {} break;
                 }
-            } break;
+                    break;
+                case DONE: {
+                }
+                    break;
+                default: {
+                }
+                    break;
+                }
+            }
+                break;
             case "progress": {
                 final int oldProgress = (int) oldValue;
                 final int newProgress = (int) newValue;
                 
                 RenderPanel.this.progressBar.setValue(newProgress);
-            } break;
-            default: {} break;
+            }
+                break;
+            default: {
+            }
+                break;
             }
         }
-
+        
     }
-
+    
     private class RenderTask extends SwingWorker<List<TextLayout>, TextLayout> {
-
+        
         private class CancelAction extends AbstractAction {
-
+            
             public CancelAction() {
                 super("Cancel Render");
                 
                 this.putValue(SHORT_DESCRIPTION, "Cancel Render");
                 this.putValue(LONG_DESCRIPTION, "Cancel the current render task.");
             }
-
+            
             @Override
             public void actionPerformed(final ActionEvent arg0) {
                 assert EventQueue.isDispatchThread();
                 
                 RenderTask.this.cancel(true);
             }
-
+            
         }
-
+        
         private final float desiredWidth;
-
+        
         private final String text;
-
+        
         public RenderTask(final float desiredWidth, final String text) {
             super();
             this.desiredWidth = desiredWidth;
             this.text = text;
         }
-
+        
         public Action getCancelAction() {
             return new CancelAction();
         }
-
+        
         @Override
         protected List<TextLayout> doInBackground() throws Exception {
             assert !EventQueue.isDispatchThread();
-
+            
             final String[] lines = text.split("\r\n|\r|\n");
             int tempLength = 0;
             for (final String line : lines) {
@@ -212,7 +227,8 @@ public class RenderPanel extends JPanel {
                 }
                 
                 final BreakIterator breakIter = BreakIterator.getLineInstance();
-                final FontRenderContext frc = new FontRenderContext(null, RenderingHints.VALUE_TEXT_ANTIALIAS_ON, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+                final FontRenderContext frc = new FontRenderContext(null, RenderingHints.VALUE_TEXT_ANTIALIAS_ON,
+                        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
                 final LineBreakMeasurer lineBreakMeasurer = new LineBreakMeasurer(characterIterator, breakIter, frc);
                 
                 final int beginIndex = characterIterator.getBeginIndex();
@@ -230,8 +246,8 @@ public class RenderPanel extends JPanel {
                         final int percent = (offset * 100) / documentLength;
                         this.setProgress(percent);
                     } else {
-                        final float floatOffset = (float) offset;
-                        final float percent = (floatOffset * 100f) / (float) documentLength;
+                        final float floatOffset = offset;
+                        final float percent = (floatOffset * 100f) / documentLength;
                         this.setProgress((int) percent);
                     }
                     
@@ -250,7 +266,7 @@ public class RenderPanel extends JPanel {
             
             return layouts;
         }
-
+        
         @Override
         protected void process(final List<TextLayout> chunks) {
             assert EventQueue.isDispatchThread();
@@ -259,7 +275,7 @@ public class RenderPanel extends JPanel {
                 documentPanel.addTextLayout(nextLayout);
             }
         }
-
+        
         @Override
         protected void done() {
             assert EventQueue.isDispatchThread();
@@ -269,7 +285,7 @@ public class RenderPanel extends JPanel {
             RenderPanel.this.revalidate();
             RenderPanel.this.repaint();
         }
-
+        
     }
-
+    
 }

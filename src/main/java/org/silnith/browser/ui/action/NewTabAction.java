@@ -10,10 +10,11 @@ import javax.swing.KeyStroke;
 
 import org.silnith.browser.ui.BrowserWindow;
 
+
 public class NewTabAction extends AbstractAction {
-
+    
     private final BrowserWindow browserWindow;
-
+    
     public NewTabAction(final BrowserWindow browserWindow) {
         super("New Tab");
         this.browserWindow = browserWindow;
@@ -23,12 +24,12 @@ public class NewTabAction extends AbstractAction {
         this.putValue(SHORT_DESCRIPTION, "Open a new tab.");
         this.putValue(LONG_DESCRIPTION, "Opens a new tab in the current window.");
     }
-
+    
     @Override
     public void actionPerformed(final ActionEvent e) {
         assert EventQueue.isDispatchThread();
         
         browserWindow.createNewTab();
     }
-
+    
 }

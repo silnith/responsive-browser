@@ -9,10 +9,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+
 public class SetLookAndFeelAction extends AbstractAction {
-
+    
     private final String className;
-
+    
     public SetLookAndFeelAction(final String name, final String className) {
         super(name);
         this.className = className;
@@ -20,7 +21,7 @@ public class SetLookAndFeelAction extends AbstractAction {
         this.putValue(SHORT_DESCRIPTION, "Set Look and Feel to " + name);
         this.putValue(LONG_DESCRIPTION, "Set the current Look and Feel to " + name + ".");
     }
-
+    
     @Override
     public void actionPerformed(final ActionEvent event) {
         assert EventQueue.isDispatchThread();
@@ -41,5 +42,5 @@ public class SetLookAndFeelAction extends AbstractAction {
             e.printStackTrace();
         }
     }
-
+    
 }

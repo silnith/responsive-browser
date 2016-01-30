@@ -12,11 +12,11 @@ import java.util.concurrent.Callable;
 
 
 public class DownloadTask implements Callable<Reader> {
-
+    
     private final URL url;
-
+    
     private final int bufferSize;
-
+    
     public DownloadTask(final URL url, final int bufferSize) {
         super();
         if (url == null) {
@@ -28,7 +28,7 @@ public class DownloadTask implements Callable<Reader> {
         this.url = url;
         this.bufferSize = bufferSize;
     }
-
+    
     @Override
     public Reader call() throws Exception {
         final URLConnection connection = url.openConnection();
@@ -55,5 +55,5 @@ public class DownloadTask implements Callable<Reader> {
             return new InputStreamReader(new ByteArrayInputStream(byteArray), contentEncoding);
         }
     }
-
+    
 }

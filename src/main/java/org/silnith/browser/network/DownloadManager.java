@@ -4,7 +4,7 @@ import org.silnith.browser.model.DownloadRequest;
 
 
 public interface DownloadManager {
-
+    
     Download download(DownloadRequest downloadRequest);
-
+    
 }

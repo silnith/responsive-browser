@@ -10,10 +10,11 @@ import javax.swing.KeyStroke;
 
 import org.silnith.browser.ui.BrowserWindow;
 
+
 public class CloseTabAction extends AbstractAction {
-
+    
     private final BrowserWindow browserWindow;
-
+    
     public CloseTabAction(final BrowserWindow browserWindow) {
         super("Close Tab");
         this.browserWindow = browserWindow;
@@ -23,12 +24,12 @@ public class CloseTabAction extends AbstractAction {
         this.putValue(SHORT_DESCRIPTION, "Close the current tab.");
         this.putValue(LONG_DESCRIPTION, "Closes the current tab in the current window.");
     }
-
+    
     @Override
     public void actionPerformed(final ActionEvent e) {
         assert EventQueue.isDispatchThread();
         
         browserWindow.closeCurrentTab();
     }
-
+    
 }

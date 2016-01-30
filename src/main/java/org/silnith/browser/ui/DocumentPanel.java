@@ -13,13 +13,17 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+
 public class DocumentPanel extends JPanel {
-
+    
     private final List<TextLayout> textLayouts;
+    
     private final List<Point2D.Float> textPositions;
+    
     private float width;
+    
     private float height;
-
+    
     public DocumentPanel() {
         super();
         this.textLayouts = new ArrayList<TextLayout>();
@@ -29,7 +33,7 @@ public class DocumentPanel extends JPanel {
         
         this.setOpaque(false);
     }
-
+    
     public void addTextLayout(final TextLayout textLayout) {
         assert EventQueue.isDispatchThread();
         final float ascent = textLayout.getAscent();
@@ -48,7 +52,7 @@ public class DocumentPanel extends JPanel {
         this.revalidate();
         this.repaint();
     }
-
+    
     @Override
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
@@ -59,7 +63,7 @@ public class DocumentPanel extends JPanel {
         
         assert textLayouts.size() == textPositions.size();
         
-        for (int i = 0; i < textLayouts.size(); i++) {
+        for (int i = 0; i < textLayouts.size(); i++ ) {
             final TextLayout textLayout = textLayouts.get(i);
             final Float position = textPositions.get(i);
             
@@ -70,7 +74,7 @@ public class DocumentPanel extends JPanel {
             }
         }
     }
-
+    
 //    @Override
 //    public Dimension getPreferredScrollableViewportSize() {
 //        // TODO Auto-generated method stub

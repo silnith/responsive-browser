@@ -1,23 +1,20 @@
 package org.silnith.browser.network;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import javax.swing.SwingWorker;
 
 
 public class DownloadWorker extends SwingWorker<byte[], Long> {
-
+    
     private final URL url;
-
+    
     private final int bufferSize;
-
+    
     public DownloadWorker(final URL url, final int bufferSize) {
         super();
         if (url == null) {
@@ -29,7 +26,7 @@ public class DownloadWorker extends SwingWorker<byte[], Long> {
         this.url = url;
         this.bufferSize = bufferSize;
     }
-
+    
     @Override
     protected byte[] doInBackground() throws Exception {
         final URLConnection connection = url.openConnection();
@@ -57,13 +54,13 @@ public class DownloadWorker extends SwingWorker<byte[], Long> {
 //            return new InputStreamReader(new ByteArrayInputStream(byteArray), contentEncoding);
 //        }
     }
-
+    
     @Override
     protected void process(final List<Long> chunks) {
     }
-
+    
     @Override
     protected void done() {
     }
-
+    
 }

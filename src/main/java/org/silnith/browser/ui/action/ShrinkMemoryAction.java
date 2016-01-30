@@ -11,7 +11,7 @@ import javax.swing.SwingWorker;
 
 
 public class ShrinkMemoryAction extends AbstractAction {
-
+    
     public ShrinkMemoryAction() {
         super("Shrink Memory");
         
@@ -20,7 +20,7 @@ public class ShrinkMemoryAction extends AbstractAction {
         this.putValue(SHORT_DESCRIPTION, "Shrink Memory");
         this.putValue(LONG_DESCRIPTION, "Shrink the amount of memory currently used.");
     }
-
+    
     @Override
     public void actionPerformed(final ActionEvent arg0) {
         assert EventQueue.isDispatchThread();
@@ -40,5 +40,5 @@ public class ShrinkMemoryAction extends AbstractAction {
         
         worker.execute();
     }
-
+    
 }

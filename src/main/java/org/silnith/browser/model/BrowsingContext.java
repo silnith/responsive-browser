@@ -9,10 +9,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.SwingWorker;
@@ -21,16 +19,17 @@ import org.silnith.browser.network.CacheEntry;
 import org.silnith.browser.network.CacheManager;
 import org.silnith.browser.network.Download;
 
+
 public class BrowsingContext implements PropertyChangeListener {
-
+    
     private final CacheManager cacheManager;
-
+    
     private final List<NavigationResult> history;
-
+    
     private final AtomicReference<NavigateTask> navigationTask;
-
+    
     private final ExecutorService executorService;
-
+    
     public BrowsingContext(final CacheManager cacheManager) {
         super();
         this.cacheManager = cacheManager;
@@ -38,7 +37,7 @@ public class BrowsingContext implements PropertyChangeListener {
         this.navigationTask = new AtomicReference<NavigateTask>();
         this.executorService = Executors.newSingleThreadExecutor();
     }
-
+    
     public NavigationResult getCurrentNavigationResult() {
         if (history.isEmpty()) {
             return null;
@@ -47,7 +46,7 @@ public class BrowsingContext implements PropertyChangeListener {
             return history.get(history.size() - 1);
         }
     }
-
+    
     public void startNewNavigation(final NavigationRequest navigationRequest) {
         assert EventQueue.isDispatchThread();
         
@@ -69,7 +68,7 @@ public class BrowsingContext implements PropertyChangeListener {
 //        final Callable<?> callable = navigateTask;
 //        final Future<String> future = executorService.submit((Callable<String>) navigateTask);
     }
-
+    
     @Override
     public void propertyChange(final PropertyChangeEvent evt) {
         assert EventQueue.isDispatchThread();
@@ -87,44 +86,57 @@ public class BrowsingContext implements PropertyChangeListener {
         
         switch (propertyName) {
         case "state": {
-            handleStateChange((NavigateTask) source, (SwingWorker.StateValue) oldValue, (SwingWorker.StateValue) newValue);
-        } break;
+            handleStateChange((NavigateTask) source, (SwingWorker.StateValue) oldValue,
+                    (SwingWorker.StateValue) newValue);
+        }
+            break;
         case "progress": {
             handleProgress((NavigateTask) source, (int) oldValue, (int) newValue);
-        } break;
-        default: {} break;
+        }
+            break;
+        default: {
+        }
+            break;
         }
     }
-
-    private void handleStateChange(final NavigateTask source, final SwingWorker.StateValue oldState, final SwingWorker.StateValue newState) {
+    
+    private void handleStateChange(final NavigateTask source, final SwingWorker.StateValue oldState,
+            final SwingWorker.StateValue newState) {
         assert EventQueue.isDispatchThread();
         
         switch (newState) {
-        case PENDING: {} break;
-        case STARTED: {} break;
+        case PENDING: {
+        }
+            break;
+        case STARTED: {
+        }
+            break;
         case DONE: {
             source.removePropertyChangeListener(this);
-        } break;
-        default: {} break;
+        }
+            break;
+        default: {
+        }
+            break;
         }
     }
-
+    
     private void handleProgress(final NavigateTask source, final int oldValue, final int newValue) {
         assert EventQueue.isDispatchThread();
         
         System.out.print("Worker task progress: ");
         System.out.println(newValue);
     }
-
+    
     private class NavigateTask extends SwingWorker<String, Integer> {
-
+        
         private final NavigationResult navigationResult;
-
+        
         public NavigateTask(final NavigationResult navigationResult) {
             super();
             this.navigationResult = navigationResult;
         }
-
+        
         @Override
         protected String doInBackground() throws Exception {
             assert !EventQueue.isDispatchThread();
@@ -138,8 +150,9 @@ public class BrowsingContext implements PropertyChangeListener {
             final CacheEntry cacheEntry = cacheManager.getCacheEntry(navigationRequest.getURL());
             
             /*
-             * If the cache entry does not have the content yet, ask the download
-             * manager to download the file and populate the cache entry.
+             * If the cache entry does not have the content yet, ask the
+             * download manager to download the file and populate the cache
+             * entry.
              */
             
             final Download download = cacheEntry.offerDownload(null, null).get();
@@ -163,9 +176,8 @@ public class BrowsingContext implements PropertyChangeListener {
              */
             
             /*
-             * Start the renderer in a SwingWorker.
-             * 
-             * The SwingWorker will fire update events to the render listeners.
+             * Start the renderer in a SwingWorker. The SwingWorker will fire
+             * update events to the render listeners.
              */
             
             // update listeners to re-render
@@ -193,7 +205,7 @@ public class BrowsingContext implements PropertyChangeListener {
             
             return "done";
         }
-
+        
         @Override
         protected void process(final List<Integer> chunks) {
             assert EventQueue.isDispatchThread();
@@ -201,7 +213,7 @@ public class BrowsingContext implements PropertyChangeListener {
             System.out.print("Processing: ");
             System.out.println(chunks);
         }
-
+        
         @Override
         protected void done() {
             assert EventQueue.isDispatchThread();
@@ -214,7 +226,7 @@ public class BrowsingContext implements PropertyChangeListener {
                 System.out.println("What happened?");
             }
         }
-
+        
     }
-
+    
 }

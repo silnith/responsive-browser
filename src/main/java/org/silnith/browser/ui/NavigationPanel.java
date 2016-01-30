@@ -12,18 +12,19 @@ import javax.swing.JTextField;
 import org.silnith.browser.model.BrowsingContext;
 import org.silnith.browser.model.NavigationListener;
 
+
 public class NavigationPanel extends JPanel {
-
+    
     private final JTextField urlBar;
-
+    
     private JLabel errorPanel;
-
+    
     public NavigationPanel() {
         super(new BorderLayout());
         this.urlBar = new JTextField("http://www.w3.org/TR/html4/charset.html");
         this.errorPanel = null;
     }
-
+    
     public void initialize(final BrowsingContext browsingContext) {
         assert EventQueue.isDispatchThread();
         
@@ -39,7 +40,7 @@ public class NavigationPanel extends JPanel {
         
         this.add(urlPanel, BorderLayout.PAGE_START);
     }
-
+    
     public void clearErrors() {
         assert EventQueue.isDispatchThread();
         
@@ -50,7 +51,7 @@ public class NavigationPanel extends JPanel {
         }
         errorPanel = null;
     }
-
+    
     public void showError(final MalformedURLException exception) {
         assert EventQueue.isDispatchThread();
         
@@ -65,5 +66,5 @@ public class NavigationPanel extends JPanel {
         
         this.revalidate();
     }
-
+    
 }

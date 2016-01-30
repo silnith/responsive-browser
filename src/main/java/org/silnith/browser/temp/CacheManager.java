@@ -20,15 +20,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 
+
 public class CacheManager {
-
+    
     private final ConcurrentMap<DownloadDescription, Object> currentDownloads;
-
+    
     public CacheManager() {
         super();
         this.currentDownloads = new ConcurrentHashMap<>();
     }
-
+    
     public Object offerDownload(final DownloadOffer downloadOffer) throws IOException {
         final FileSystem defaultFileSystem = FileSystems.getDefault();
         
@@ -57,11 +58,9 @@ public class CacheManager {
 //            return null;
 //        }
         
-        final Path cacheEntryPath = cachePath
-                .resolve(getPathForProtocol(url.getProtocol()))
-                .resolve(getPathForHost(url.getHost()))
-                .resolve(getPathForPort(url.getPort(), url.getDefaultPort()))
-                .resolve(getPathForPath(url.getPath()));
+        final Path cacheEntryPath =
+                cachePath.resolve(getPathForProtocol(url.getProtocol())).resolve(getPathForHost(url.getHost())).resolve(
+                        getPathForPort(url.getPort(), url.getDefaultPort())).resolve(getPathForPath(url.getPath()));
 //        final Path hostCachePath = cachePath.resolve(Paths.get(url.getProtocol(), url.getHost()));
 //        final Path cacheEntryPath = hostCachePath.resolve(Paths.get(url.getPath().substring(1)));
         
@@ -107,15 +106,15 @@ public class CacheManager {
         
         return null;
     }
-
+    
     private Path getPathForProtocol(final String protocol) {
         return Paths.get("protocol_" + protocol);
     }
-
+    
     private Path getPathForHost(final String host) {
         return Paths.get("host_" + host);
     }
-
+    
     private Path getPathForPort(final int port, final int defaultPort) {
         if (port == -1) {
             return Paths.get("port_" + defaultPort);
@@ -123,7 +122,7 @@ public class CacheManager {
             return Paths.get("port_" + port);
         }
     }
-
+    
     private Path getPathForPath(final String path) {
         if (path == null) {
             return Paths.get("file_");
@@ -151,14 +150,15 @@ public class CacheManager {
             }
         }
     }
-
+    
     public static void main(final String[] args) throws IOException {
         final CacheManager cacheManager = new CacheManager();
         
-        cacheManager.offerDownload(new DownloadOffer(new DownloadDescription(new URL("http://www.w3.org/TR/html5/infrastructure.html#content-type-sniffing"))));
+        cacheManager.offerDownload(new DownloadOffer(new DownloadDescription(
+                new URL("http://www.w3.org/TR/html5/infrastructure.html#content-type-sniffing"))));
 //        cacheManager.offerDownload(new DownloadOffer(new DownloadDescription(new URL("http://www.w3.org/foo"))));
         cacheManager.offerDownload(new DownloadOffer(new DownloadDescription(new URL("http://www.w3.org/"))));
         cacheManager.offerDownload(new DownloadOffer(new DownloadDescription(new URL("http://www.w3.org"))));
     }
-
+    
 }

@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -15,15 +14,17 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+
 
 public class ImageRenderPanel extends JPanel {
-
+    
     private BufferedImage image;
-
+    
     public ImageRenderPanel() {
         super(new BorderLayout());
     }
-
+    
     public void initialize() {
         assert EventQueue.isDispatchThread();
         
@@ -31,13 +32,13 @@ public class ImageRenderPanel extends JPanel {
         try {
             image = ImageIO.read(new URL("file:///C:/Users/kent/Downloads/18bskg.jpg"));
         } catch (final IOException e) {
-            System.exit(-1);
+            System.exit( -1);
             return;
         }
         
         this.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
     }
-
+    
     @Override
     protected void paintComponent(final Graphics g) {
         super.paintComponent(g);
@@ -46,7 +47,7 @@ public class ImageRenderPanel extends JPanel {
         
         g.drawImage(image, 0, 0, null);
     }
-
+    
     public static void main(final String[] args) throws InvocationTargetException, InterruptedException {
         SwingUtilities.invokeAndWait(new Runnable() {
             
@@ -57,7 +58,7 @@ public class ImageRenderPanel extends JPanel {
                 
                 final JFrame frame = new JFrame("test");
                 frame.setContentPane(imageRenderPanel);
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 
                 frame.pack();
                 frame.setVisible(true);
@@ -65,5 +66,5 @@ public class ImageRenderPanel extends JPanel {
             
         });
     }
-
+    
 }
