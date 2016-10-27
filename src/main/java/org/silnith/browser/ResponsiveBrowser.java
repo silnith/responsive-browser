@@ -16,6 +16,9 @@ import org.silnith.browser.ui.action.ExitBrowserAction;
 import org.silnith.browser.ui.action.NewWindowAction;
 
 
+/**
+ * The main entry point for the browser program.
+ */
 public class ResponsiveBrowser {
     
     private final CacheManager cacheManager;
@@ -34,6 +37,9 @@ public class ResponsiveBrowser {
         this.exitBrowserAction = new ExitBrowserAction(this);
     }
     
+    /**
+     * Creates a new browser window.  Must be called in the event dispatch thread.
+     */
     public void createNewWindow() {
         assert EventQueue.isDispatchThread();
         

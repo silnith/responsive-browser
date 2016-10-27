@@ -29,6 +29,11 @@ import org.silnith.browser.ui.action.tab.TabTopAction;
 import org.silnith.browser.ui.action.tab.TabWrapAction;
 
 
+/**
+ * A single browser window in the responsive browser.  This establishes a root
+ * for window-based actions, but shares a download manager and cache manager
+ * with all other windows.
+ */
 public class BrowserWindow extends JFrame {
     
     private final CacheManager cacheManager;
@@ -51,6 +56,9 @@ public class BrowserWindow extends JFrame {
         this.setLocationByPlatform(true);
     }
     
+    /**
+     * Initializes the browser window.  Must be called in the event dispatch thread.
+     */
     public void initialize() {
         assert EventQueue.isDispatchThread();
         
@@ -60,6 +68,11 @@ public class BrowserWindow extends JFrame {
         createNewTab();
     }
     
+    /**
+     * Creates a menubar for the window.
+     * 
+     * @return the menubar
+     */
     private JMenuBar createMenuBar() {
         final JMenu browserMenu = new JMenu("Browser");
         browserMenu.setMnemonic(KeyEvent.VK_B);
@@ -88,6 +101,12 @@ public class BrowserWindow extends JFrame {
         return menuBar;
     }
     
+    /**
+     * Creates the menu that allows specifying where the tab placement will be
+     * for the tabbed pane for this window.
+     * 
+     * @return the tab placement menu
+     */
     private JMenu createTabPlacementMenu() {
         final JRadioButtonMenuItem topMenuItem = new JRadioButtonMenuItem(new TabTopAction(tabbedPane));
         final JRadioButtonMenuItem leftMenuItem = new JRadioButtonMenuItem(new TabLeftAction(tabbedPane));
@@ -111,6 +130,12 @@ public class BrowserWindow extends JFrame {
         return menu;
     }
     
+    /**
+     * Creates the menu that allows specifying the tab layout policy for the
+     * tabbed pane for this window.
+     * 
+     * @return the tab policy menu
+     */
     private JMenu createTabLayoutPolicyMenu() {
         final JRadioButtonMenuItem wrapMenuItem = new JRadioButtonMenuItem(new TabWrapAction(tabbedPane));
         final JRadioButtonMenuItem scrollMenuItem = new JRadioButtonMenuItem(new TabScrollAction(tabbedPane));
@@ -128,6 +153,12 @@ public class BrowserWindow extends JFrame {
         return menu;
     }
     
+    /**
+     * Creates the menu that allows setting the overall Look &amp; Feel for the
+     * application.
+     * 
+     * @return the look and feel menu
+     */
     private JMenu createLookAndFeelMenu() {
         final JMenu menu = new JMenu("Look And Feel");
         menu.setMnemonic(KeyEvent.VK_L);
@@ -139,6 +170,10 @@ public class BrowserWindow extends JFrame {
         return menu;
     }
     
+    /**
+     * Creates a new tab in this window.  Must be called in the event dispatch
+     * thread.
+     */
     public void createNewTab() {
         assert EventQueue.isDispatchThread();
         
@@ -152,6 +187,10 @@ public class BrowserWindow extends JFrame {
         return tabbedPane.getTabCount();
     }
     
+    /**
+     * Closes and disposes of the currently active tab in this window.  Must be
+     * called in the event dispatch thread.
+     */
     public void closeCurrentTab() {
         assert EventQueue.isDispatchThread();
         
@@ -162,6 +201,10 @@ public class BrowserWindow extends JFrame {
         }
     }
     
+    /**
+     * Closes and disposes of this window.  Must be called in the event dispatch
+     * thread.
+     */
     public void closeWindow() {
         assert EventQueue.isDispatchThread();
         

@@ -34,6 +34,12 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 
 
+/**
+ * The panel to display the rendered content and controls associated with the
+ * rendering task.  This is a generic container that can hold any generic rendered
+ * content produced by an external renderer.  This panel provides controls that
+ * allow a standardized interface for interacting with the render task.
+ */
 public class RenderPanel extends JPanel {
     
     private final JPanel progressPanel;
@@ -51,6 +57,9 @@ public class RenderPanel extends JPanel {
 //        this.documentPanel = new JPanel(new BorderLayout());
     }
     
+    /**
+     * Initializes the render panel.  Must be called from the event dispatch thread.
+     */
     public void initialize() {
         assert EventQueue.isDispatchThread();
         
@@ -108,7 +117,7 @@ public class RenderPanel extends JPanel {
             
         };
         
-        loadTask.execute();
+//        loadTask.execute();
     }
     
     public void setText(final String text) {

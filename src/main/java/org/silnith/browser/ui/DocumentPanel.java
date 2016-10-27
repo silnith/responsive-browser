@@ -14,26 +14,36 @@ import java.util.List;
 import javax.swing.JPanel;
 
 
+/**
+ * A panel that displays a plain-text document as a vertical sequence of
+ * {@link TextLayout} objects.
+ */
 public class DocumentPanel extends JPanel {
     
     private final List<TextLayout> textLayouts;
     
     private final List<Point2D.Float> textPositions;
     
-    private float width;
+    private float totalWidth;
     
-    private float height;
+    private float totalHeight;
     
     public DocumentPanel() {
         super();
         this.textLayouts = new ArrayList<TextLayout>();
         this.textPositions = new ArrayList<Point2D.Float>();
-        this.width = 0f;
-        this.height = 0f;
+        this.totalWidth = 0f;
+        this.totalHeight = 0f;
         
         this.setOpaque(false);
     }
     
+    /**
+     * Adds a new line of text to this panel's displayed content.  Must be called
+     * from the event dispatch thread.
+     * 
+     * @param textLayout the new line of text
+     */
     public void addTextLayout(final TextLayout textLayout) {
         assert EventQueue.isDispatchThread();
         final float ascent = textLayout.getAscent();
@@ -42,15 +52,23 @@ public class DocumentPanel extends JPanel {
         final float visibleAdvance = textLayout.getVisibleAdvance();
         
         textLayouts.add(textLayout);
-        textPositions.add(new Point2D.Float(0, height + ascent + leading * 0.5f));
+        final Point2D.Float position = new Point2D.Float(0, totalHeight + ascent + leading * 0.5f);
+        textPositions.add(position);
         
-        width = Math.max(width, visibleAdvance);
-        height += ascent + descent + leading;
+        final float layoutWidth = visibleAdvance;
+        final float layoutHeight = ascent + descent + leading;
+        final Dimension dimension = new Dimension((int) Math.ceil(layoutWidth), (int) Math.ceil(layoutHeight));
         
-        this.setPreferredSize(new Dimension((int) Math.ceil(width), (int) Math.ceil(height)));
+        totalWidth = Math.max(totalWidth, layoutWidth);
+        totalHeight += layoutHeight;
+        
+        final Dimension preferredSize = new Dimension((int) Math.ceil(totalWidth), (int) Math.ceil(totalHeight));
+        this.setPreferredSize(preferredSize);
+        
+        final Rectangle dirtyRegion = new Rectangle((int) Math.floor(position.getX()), (int) Math.floor(position.getY()), dimension.width, dimension.height);
         
         this.revalidate();
-        this.repaint();
+        this.repaint(dirtyRegion);
     }
     
     @Override

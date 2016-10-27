@@ -9,8 +9,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.SwingWorker;
@@ -64,7 +66,7 @@ public class BrowsingContext implements PropertyChangeListener {
         
         navigateTask.addPropertyChangeListener(this);
         
-//        navigateTask.execute();
+        navigateTask.execute();
 //        final Callable<?> callable = navigateTask;
 //        final Future<String> future = executorService.submit((Callable<String>) navigateTask);
     }

@@ -46,13 +46,8 @@ public class DownloadWorker extends SwingWorker<byte[], Long> {
                 }
             }
             byteArray = outputStream.toByteArray();
+            return byteArray;
         }
-        return null;
-//        if (contentEncoding == null) {
-//            return new InputStreamReader(new ByteArrayInputStream(byteArray), Charset.forName("UTF-8"));
-//        } else {
-//            return new InputStreamReader(new ByteArrayInputStream(byteArray), contentEncoding);
-//        }
     }
     
     @Override
